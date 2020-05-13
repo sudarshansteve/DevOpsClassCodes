@@ -1,0 +1,23 @@
+#!/usr/bin/env groovy
+import hudson.model.*
+import hudson.EnvVars
+import groovy.json.JsonSlurperClassic
+import groovy.json.JsonBuilder
+import groovy.json.JsonOutput
+import java.net.URL
+
+node{
+ stage('Checkout') {
+ git 'https://github.com/edureka-git/DevOpsClassCodes'
+ } 
+ stage('Build') {
+  sh 'mvn -B -V -U -e clean package'
+ }
+ stage('Archive my package') {
+   archiveArtifacts 'target/*.war'
+ }
+ stage('clean up') {
+ echo "cleaning up the workspace"
+ cleanWs()
+ }
+}
